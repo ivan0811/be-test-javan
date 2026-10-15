@@ -1,0 +1,12 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nestjs",
+  "installCommand": "npm ci",
+  "buildCommand": "npm run build",
+  "functions": {
+    "src/main.ts": {
+      "maxDuration": 30,
+      "includeFiles": "{data/ssl_country_codes.json,node_modules/swagger-ui-dist/**}"
+    }
+  }
+}

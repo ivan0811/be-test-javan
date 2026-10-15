@@ -31,6 +31,16 @@
 $ npm install
 ```
 
+Backend membaca `.env` saat startup lokal. Jika file belum ada, salin `.env.example`
+ke `.env`. URL API Nationalize dikonfigurasi melalui:
+
+```dotenv
+API_URL=https://api.nationalize.io
+```
+
+`NationalizeService` menambahkan query `name` pada URL tersebut. Restart backend
+setelah mengubah `.env`.
+
 ## Compile and run the project
 
 ```bash
@@ -85,7 +95,8 @@ Directory `be-test-javan` jika repository berisi frontend dan backend. Jika repo
 ini hanya berisi backend, gunakan `./`. Biarkan Output Directory pada default
 NestJS. Install dan build sudah dikonfigurasi di `vercel.json`.
 
-Set `CORS_ORIGINS=https://YOUR-FRONTEND.vercel.app` pada Environment Variables Vercel.
+Set `API_URL=https://api.nationalize.io` dan
+`CORS_ORIGINS=https://YOUR-FRONTEND.vercel.app` pada Environment Variables Vercel.
 Untuk beberapa origin, pisahkan dengan koma. Redeploy setiap kali nilainya berubah.
 File `.env.example` mendokumentasikan variable yang didukung.
 

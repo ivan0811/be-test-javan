@@ -6,6 +6,7 @@ describe('NationalizeService', () => {
   let service: NationalizeService;
 
   beforeEach(async () => {
+    vi.stubEnv('API_URL', 'https://api.nationalize.io');
     const module: TestingModule = await Test.createTestingModule({
       providers: [NationalizeService],
     }).compile();
@@ -19,6 +20,21 @@ describe('NationalizeService', () => {
 
   afterEach(() => {
     vi.unstubAllGlobals();
+    vi.unstubAllEnvs();
+  });
+
+  it('uses the configured API URL and preserves its query parameters', async () => {
+    vi.stubEnv('API_URL', 'https://nationalize.example.invalid/predict?language=id');
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify({
+      count: 0, name: 'Budi &name=andi', country: [],
+    })));
+    vi.stubGlobal('fetch', fetchMock);
+
+    await service.getAll(' Budi &name=andi ');
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://nationalize.example.invalid/predict?language=id&name=Budi+%26name%3Dandi',
+    );
   });
 
   it('enriches prediction data with country names and rounded percentages', async () => {

@@ -40,8 +40,13 @@ export class NationalizeService {
     }
 
     try {
-      const params = new URLSearchParams({ name: name.trim() });
-      const getNationalizeApi = await fetch(`https://api.nationalize.io/?${params.toString()}`);
+      const apiUrl = process.env.API_URL?.trim();
+      if (!apiUrl) {
+        throw new Error('API_URL is not configured in the backend environment.');
+      }
+      const requestUrl = new URL(apiUrl);
+      requestUrl.searchParams.set('name', name.trim());
+      const getNationalizeApi = await fetch(requestUrl.toString());
       if (!getNationalizeApi.ok) {
         throw new Error(`Nationalize API returned HTTP ${getNationalizeApi.status}`);
       }
